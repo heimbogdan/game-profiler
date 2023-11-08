@@ -1,0 +1,188 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_Create_Player_Profile" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <createTable tableName="PLAYER_PROFILE">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREDENTIAL" type="VARCHAR(25)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED" type="TIMESTAMPTZ" >
+                <constraints nullable="false" />
+            </column>
+            <column name="MODIFIED" type="TIMESTAMPTZ" >
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_SESSION" type="TIMESTAMPTZ" >
+                <constraints nullable="false" />
+            </column>
+            <column name="TOTAL_SPENT" type="INTEGER" >
+                <constraints nullable="false" />
+            </column>
+            <column name="TOTAL_REFUND" type="INTEGER" >
+                <constraints nullable="false" />
+            </column>
+            <column name="TOTAL_TRANSACTIONS" type="INTEGER" >
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_PURCHASE" type="TIMESTAMPTZ" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="DEVICES" type="TEXT" >
+                <constraints nullable="false" />
+            </column>
+            <column name="LEVEL" type="INTEGER" >
+                <constraints nullable="false" />
+            </column>
+            <column name="XP" type="BIGINT" >
+                <constraints nullable="false" />
+            </column>
+            <column name="TOTAL_PLAYTIME" type="INTEGER" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="COUNTRY" type="VARCHAR(2)" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="LANGUAGE" type="VARCHAR(5)" >
+                <constraints nullable="false" />
+            </column> <!-- for en_GB, en_US etc.-->
+            <column name="BIRTHDATE" type="TIMESTAMPTZ" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="GENDER" type="VARCHAR(10)" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="INVENTORY" type="TEXT" >
+                <constraints nullable="false" />
+            </column>
+            <!-- TODO see logic here-->
+            <column name="CLAN" type="VARCHAR(36)" />
+            <!-- TODO see logic here-->
+            <column name="CUSTOM_FIELDS" type="TEXT" />
+
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2_Create_Campaign_Table" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <createTable tableName="CAMPAIGNS">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="GAME" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="PRIORITY" type="NUMERIC(5, 2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="MATCHERS" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+            <column name="START_DATE" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="END_DATE" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="ENABLED" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3_Create_Player_Campaigns_Table" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <createTable tableName="PLAYER_CAMPAIGNS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PLAYER_ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" foreignKeyName="FK_PLAYER"
+                             referencedTableName="PLAYER_PROFILE"
+                             referencedColumnNames="ID"/>
+            </column>
+            <column name="CAMPAIGN_ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" foreignKeyName="FK_CAMPAIGN"
+                             referencedTableName="CAMPAIGNS"
+                             referencedColumnNames="ID"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4_Create_Clans_Table" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <createTable tableName="CLANS">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5_Insert_Clans_Mock_data" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <sql>
+            insert into "CLANS" ("ID", "NAME")
+            values
+                ('123456', 'The Kingsguard'),
+                ('234567', 'Guardian Angels'),
+                ('654321', 'Undefeated Warriors');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="7_Insert_Player_Profile_Mock_data" author="helator" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <sql>
+            insert into "PLAYER_PROFILE" ("ID","CREDENTIAL","CREATED","MODIFIED","LAST_SESSION","TOTAL_SPENT",
+                                          "TOTAL_REFUND","TOTAL_TRANSACTIONS","LAST_PURCHASE","DEVICES",
+                                          "LEVEL","XP","TOTAL_PLAYTIME","COUNTRY","LANGUAGE","BIRTHDATE",
+                                          "GENDER","INVENTORY","CLAN","CUSTOM_FIELDS")
+            values
+                ('97983be2-98b7-11e7-90cf-082e5f28d836','APPLE','2021-01-10 13:37:17Z',
+                 '2021-01-23 13:37:17Z','2021-01-23 13:37:17Z', 400, 0, 5, '2021-01-22 13:37:17Z',
+                 '[{"id":1,"model":"apple iphone 11","carrier":"vodafone","firmware":"123"}]',
+                 3, 1000, 144, 'CA', 'fr', '2000-01-10 13:37:17Z', 'MALE',
+                 '{"cash":123,"coins":123,"item_1":1,"item_34":3,"item_55":2}',
+                 '123456','{"_customfield":"mycustom"}'),
+                ('4586d9a8-39ca-4aef-b612-7dec3f8005e8','APPLE','2021-01-10 13:37:17Z',
+                 '2021-01-23 13:37:17Z','2021-01-23 13:37:17Z', 100, 0, 2, '2021-01-22 13:37:17Z',
+                 '[{"id":1,"model":"apple iphone 11","carrier":"vodafone","firmware":"123"}]',
+                 3, 1000, 144, 'CA', 'fr', '2000-01-10 13:37:17Z', 'MALE',
+                 '{"cash":1234,"coins":1234,"item_1":2,"item_34":3,"item_55":2}',
+                 '234567','{"_customfield":"mycustom","_customfield2":"mycustom2"}'),
+                ('5dfaff88-a8cc-4825-893a-09533ff728ce','GOOGLE','2021-01-10 13:37:17Z',
+                 '2021-01-23 13:37:17Z','2021-01-23 13:37:17Z', 200, 0, 1, '2021-01-22 13:37:17Z',
+                 '[{"id":1,"model":"apple iphone 11","carrier":"vodafone","firmware":"123"}]',
+                 3, 1000, 144, 'RO', 'EN_US', '2000-01-10 13:37:17Z', 'MALE',
+                 '{"cash":123,"coins":123,"item_4":1,"item_34":3,"item_55":2}',
+                 '234567','{"_customfield":"mycustom"}'),
+                ('6dc21b8e-2ddf-415c-a818-cbfc25c362c6','GOOGLE','2021-01-10 13:37:17Z',
+                 '2021-01-23 13:37:17Z','2021-01-23 13:37:17Z', 450, 0, 3, '2021-01-22 13:37:17Z',
+                 '[{"id":1,"model":"apple iphone 11","carrier":"vodafone","firmware":"123"}]',
+                 3, 1000, 144, 'CA', 'fr', '2000-01-10 13:37:17Z', 'FEMALE',
+                 '{"cash":123,"coins":123,"item_5":1,"item_55":2}',
+                 '123456','{"_customfield":"mycustom"}'),
+                ('5315df15-070c-4b81-b2e1-f73d18bc795c','APPLE','2021-01-10 13:37:17Z',
+                 '2021-01-23 13:37:17Z','2021-01-23 13:37:17Z', 30, 0, 2, '2021-01-22 13:37:17Z',
+                 '[{"id":1,"model":"apple iphone 11","carrier":"vodafone","firmware":"123"}]',
+                 3, 1000, 144, 'CA', 'fr', '2000-01-10 13:37:17Z', 'FEMALE',
+                 '{"cash":123,"coins":123,"item_1":1,"item_34":3,"item_55":2}',
+                 '123456','{"_customfield":"mycustom"}');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

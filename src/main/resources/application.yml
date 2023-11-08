@@ -1,0 +1,47 @@
+server:
+    port: ${GP_PORT:8300}
+    http2:
+        enabled: true
+    ssl:
+        key-store-type: PKCS12
+        key-store: classpath:dev/dev.p12
+        key-store-password: password
+        key-alias: dev
+        enabled: true
+
+spring:
+    application:
+        name: game-profiler-service
+    datasource:
+        url: jdbc:postgresql://${GP_DB_HOSTNAME:127.0.0.1}:${GP_DB_PORT:5432}/${GP_DB_NAME:game_profiler_db}
+        username: ${GP_DB_USERNAME:dbuser}
+        password: ${GP_DB_PASSWORD:passw0rd}
+    liquibase:
+        change-log: 'classpath:database/changelog.xml'
+        databaseChangeLogTable: 'GP_CHANGELOG'
+        databaseChangeLogLockTable: 'GP_CHANGELOGLOCK'
+    jpa:
+        hibernate:
+            naming:
+                implicit-strategy: 'org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl'
+                physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
+            format_sql: true
+        open-in-view: false
+        show-sql: false
+        properties:
+            hibernate:
+                dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+                format_sql: true
+                id.new_generator_mappings: false
+                globally_quoted_identifiers: true
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+app:
+    version: '0.0.1-SNAPSHOT'
+    swagger:
+        server:
+            url: ${SWAGGER_SERVER:https://localhost:8300}
+logging:
+  level:
+    root: debug

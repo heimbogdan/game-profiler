@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "PLAYER_PROFILE")
+@Table(name = "CAMPAIGNS")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class CampaignEntity {
     @Type(type = "uuid-char")
     @GeneratedValue
     @Column(name = "ID")
-    private String id;
+    private UUID id;
 
     @Column(name = "GAME")
     private String game;

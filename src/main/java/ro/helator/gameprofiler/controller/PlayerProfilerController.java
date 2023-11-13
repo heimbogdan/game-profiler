@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@Tag(name = "assets", description = "Assets controller")
-@RequestMapping("/assets")
+@Tag(name = "profiler", description = "Profiler controller")
+@RequestMapping()
 public class PlayerProfilerController {
 
     private PlayerProfilerService profilerService;

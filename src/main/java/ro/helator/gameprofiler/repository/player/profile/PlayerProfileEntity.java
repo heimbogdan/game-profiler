@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import ro.helator.gameprofiler.repository.campaign.CampaignEntity;
+import ro.helator.gameprofiler.repository.clan.ClanEntity;
 import ro.helator.gameprofiler.service.model.*;
 
 import javax.persistence.*;
@@ -79,12 +80,14 @@ public class PlayerProfileEntity {
     @Column(name = "COUNTRY")
     private CountyCodeEnum county;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "LANGUAGE")
     private LanguageEnum language;
 
     @Column(name = "BIRTHDATE")
     private OffsetDateTime birthdate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "GENDER")
     private GenderEnum gender;
 
@@ -94,7 +97,7 @@ public class PlayerProfileEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLAN")
-    private CampaignEntity clan;
+    private ClanEntity clan;
 
     @Type(type = "json")
     @Column(name = "CUSTOM_FIELDS")
